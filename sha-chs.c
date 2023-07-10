@@ -1,6 +1,6 @@
 /* sha benchmark from CHStone (Hara 2008)
    found in e.g. legup-4.0/examples/chstone/sha/sha.c
-   which got it from http://www.ertl.jp/chstone/ */
+   which got it www.ertl.jp/chstone/ */
 
 #include <stdio.h>
 

@@ -1,4 +1,5 @@
-/*
+/*  This is adapted from the original by combining the three separate files
+    into one.
  ****************************************************************************
  *
  *                   "DHRYSTONE" Benchmark Program
@@ -6,7 +7,7 @@
  *                                                                            
  *  Version:    C, Version 2.1
  *                                                                            
- *  File:       dhry_1.c (part 2 of 3)
+ *  File:       dhry-legup.c
  *
  *  Date:       May 25, 1988
  *

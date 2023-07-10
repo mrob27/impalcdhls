@@ -1,5 +1,5 @@
-/**
- * Implemented non-recursive quick sort, adapted from this on-line implementation:
+/*
+ * Non-recursive quick sort, adapted from this on-line implementation:
  *     http://alienryderflex.com/quicksort/
  * This benchmark calls the qsort 20 times, each on an array of 50 items.
  *

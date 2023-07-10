@@ -1,10 +1,9 @@
-// matrix multiply
-// Author: Andrew Canis
-// Date: June 13, 2012
+/* matrix multiply
+   Author: Andrew Canis, Date: June 13, 2012  */
 
 #include <stdio.h>
 
-// matrices are SIZE x SIZE
+/* matrices are SIZE x SIZE */
 #define SIZE 20
 
 volatile int A1[SIZE][SIZE] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,

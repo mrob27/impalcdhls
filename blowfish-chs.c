@@ -1,4 +1,5 @@
 /* AES benchmark from CHStone (Hara 2008)
+   who got it from MiBench (Guthaus et al. 2001)
    who got it from Eric Young (eay@mincom.oz.au)
 
   This package is an SSL implementation written

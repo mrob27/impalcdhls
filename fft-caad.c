@@ -1,4 +1,5 @@
-/* FFT, adapted from rosettacode.org/wiki/Fast_Fourier_transform by Robert Munafo */
+/* FFT, adapted from rosettacode.org/wiki/Fast_Fourier_transform by Robert Munafo
+   for the 2023 HLS PPO training project. */
 
 #include <stdio.h>
 

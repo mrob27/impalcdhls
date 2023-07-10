@@ -1,4 +1,5 @@
-/* AES benchmark from CHStone (Hara 2008) */
+/* AES benchmark from CHStone (Hara 2008)
+   who got it from Akira Iwata, www-ailab.elcom.nitech.ac.jp */
 
 #include <stdio.h>
 

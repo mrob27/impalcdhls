@@ -2,6 +2,9 @@
    Author: Robert Munafo  (with fixed-point maths from Andrew Canis)
    Date: 2023 Jun 10
 
+This program performs Euler integration on a 2-dimensinal grid to
+simulate the heat equation.
+
 To see the image of the SOR grid, define PRINT_IMG to 1
 and then do:
 

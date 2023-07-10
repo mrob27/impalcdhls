@@ -2,8 +2,17 @@
    Author: Robert Munafo
    Date: 2023 Jun 26
 
-define GEN_DATA to 1 to get the data for initialising the
-ref_r and ref_i array
+Define GEN_DATA to 1 to have it run iter1() which prints out the data
+to initialise the array ref_r.
+
+The iter2 function shows the original straightforward algorithm. It
+performs 12 multiplies and 17 adds, 2 memory reads and 3 comparisons
+(occasionally more) per iteration.
+
+iter3 has been adapted to perform four simultaneous and independent
+tasks each equialent to iter2. This may or may not be able to run faster
+than simply caling iter2 four times, depending on the aggressiveness
+of the compiler and the ILP abilities of the target processor.
 
  */
 
