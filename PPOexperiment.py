@@ -1,4 +1,4 @@
-# .../06-plotting/RLbase.py
+# .../impalcdhls/PPOexperiment.py
 #
 # This drives a RL (Reinforcement Learning) style of AI training,
 # using a variety of models including:
