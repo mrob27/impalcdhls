@@ -1,4 +1,4 @@
-# .../06-plotting/Makefile   -*- makefile -*-
+# .../impalcdhls/Makefile   -*- makefile -*-
 #
 # 20230416 mark_labels.pl is not needed for our work and causes errors with
 #  some of the benchmark programs.
