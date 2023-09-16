@@ -23,8 +23,10 @@ cd rl-exper
 mkdir tmp
 mkdir logs
 mkdir python
+git checkout https://github.com/mrob27/impalcdhls.git
 cd python
-cp ../../PPOexperiment.py .
+cp ../impalcdhls/*.py .
+cp ../impalcdhls/*.pl .
 
 RLBASE_PROG=adpcm RLBASE_AGENT_TYPE=ppo RLBASE_USE_LSTM=0 \
   RLBASE_VARIANT=14steps RLBASE_ACT_HISTORY=0 RLBASE_SEED=27 \
