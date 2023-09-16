@@ -93,3 +93,10 @@ running within a shell script, and then process the log file with a
 data extraction script written in perl or sed, etc. You can change or
 add print statements to get information in a format that is suitable
 for your preferences.
+
+Second-Order Training
+---------------------
+PairwiseExp.py is similar to PPOexperiment.py but provides small rewards
+for each step in an episode, using a database of "pairwise hints" compiled
+from runs of PPOexperiment.py. See the header comment in PairwiseExp.py
+for instructions on how to generate the files it needs.
