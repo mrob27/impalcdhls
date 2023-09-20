@@ -18,6 +18,14 @@
 # * Run this Python program with similar arguments as when running
 #   PPOexperiment.py
 #
+# The experiment will proceed as in PPOexperiment.py, except that the
+# agent is given small rewards during the episode based on pairs of
+# optimization passes in the actions that it has generated so far this
+# episode.
+#   To alter the amplitude of these "pairwise rewards" in comparison to
+# the final end-of-episode reward, change the value of PW_MAGNITUDE
+# declared below.
+#
 # REVISION HISTORY:
 # 20230705 Modifications to run "second-order training" using statistics
 #   correlating rewards with pairs of "passes" (code transformations)
@@ -26,6 +34,7 @@ VAL_SEMANTIC = True
 ACT_HISTORY = False
 USE_LSTM = False
 PAIRWISE_HINTS = True
+PW_MAGNITUDE = 0.05
 
 from datetime import datetime
 import glob
@@ -585,7 +594,7 @@ class myEnv(gym.Env):
         # if is_done:
         #   print (str(hwsinc) + " step(self,action)")
         reward = get_reward(is_done, False, self.env_config)
-        if not is_done:
+        if (not is_done) and PAIRWISE_HINTS:
           # We know reward is 0 at this point because get_reward returns
           # 0 when both of its first 2 parameters is False
           actlen = len(self.env_config["actions"])
@@ -594,7 +603,7 @@ class myEnv(gym.Env):
             ix2 = self.env_config["actions"][actlen-1]
             print('indexing by ', ix1, ix2)
             # reward scaled to normalise per action
-            reward = pweights[ix1][ix2] * (O0_cyc-O3_cyc) * 0.05
+            reward = pweights[ix1][ix2] * (O0_cyc-O3_cyc) * PW_MAGNITUDE
             print('little reward: ', reward)
         return state, reward, is_done, {}
     
@@ -732,6 +741,7 @@ print("%s init: N_ITER %d" % (d14(), N_ITER))
 print("%s init: act_hist %s" % (d14(), str(ACT_HISTORY)))
 print("%s init: batchsz %d" % (d14(), config['train_batch_size']))
 print("%s init: pairwise_hints %s" % (d14(), str(PAIRWISE_HINTS)))
+print("%s init: pw_magnitude %s" % (d14(), str(PW_MAGNITUDE)))
 print("%s init: workers %d" % (d14(), config["num_workers"]))
 print("%s init: MAX_GETHWC %d" % (d14(), MAX_GETHWC))
 t = config["horizon"]
