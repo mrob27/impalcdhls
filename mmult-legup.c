@@ -1,4 +1,5 @@
 /* matrix multiply
+   from e.g. legup-4.0/examples/matrixmultiply/matrixmultiply.c
    Author: Andrew Canis, Date: June 13, 2012  */
 
 #include <stdio.h>

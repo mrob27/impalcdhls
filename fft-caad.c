@@ -1,5 +1,7 @@
-/* FFT, adapted from rosettacode.org/wiki/Fast_Fourier_transform by Robert Munafo
-   for the 2023 HLS PPO training project. */
+/* FFT, adapted from rosettacode.org/wiki/Fast_Fourier_transform
+   by Robert Munafo for the 2023 HLS PPO training project.
+   As long as you don't define USE_CPLX or USE_CPXFLT to 1, this
+   FFT code is non-recursive, which allows for HLS compilation. */
 
 #include <stdio.h>
 

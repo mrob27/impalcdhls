@@ -1,5 +1,5 @@
 /* adpcm benchmark from CHStone (Hara 2008)
-   found in e.g. legup-4.0/examples/chstone/sha/sha.c
+   found in e.g. legup-4.0/examples/chstone/adpcm/adpcm.c
    which got it from www.ertl.jp/chstone/ */
 
 #include <stdio.h>

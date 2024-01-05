@@ -1,20 +1,19 @@
 /* Floating-point iteration with testing  -*- C++ -*-
    Author: Robert Munafo
-   Date: 2023 Jun 26
+   Date: 2023 Jun 26                                       */
 
-Define GEN_DATA to 1 to have it run iter1() which prints out the data
-to initialise the array ref_r.
+/* Define GEN_DATA to 1 to have it run iter1() which prints out the data
+   to initialise the array ref_r.
 
-The iter2 function shows the original straightforward algorithm. It
-performs 12 multiplies and 17 adds, 2 memory reads and 3 comparisons
-(occasionally more) per iteration.
+   The iter2 function shows the original straightforward algorithm. It
+   performs 12 multiplies and 17 adds, 2 memory reads and 3
+   comparisons (occasionally more) per iteration.
 
-iter3 has been adapted to perform four simultaneous and independent
-tasks each equialent to iter2. This may or may not be able to run faster
-than simply caling iter2 four times, depending on the aggressiveness
-of the compiler and the ILP abilities of the target processor.
-
- */
+   iter3 has been adapted to perform four simultaneous and independent
+   tasks each equivalent to iter2. This may or may not be able to run
+   faster than simply caling iter2 four times, depending on the
+   aggressiveness of the compiler and the ILP abilities of the target
+   processor.                                                           */
 
 #include <stdio.h>
 #include <pthread.h>

@@ -1,4 +1,6 @@
-/* AES benchmark from CHStone (Hara 2008)
+/* AES benchmark
+   found at e.g. legup-4.0/examples/chstone/blowfish/*.c
+   from CHStone (Hara 2008)
    who got it from MiBench (Guthaus et al. 2001)
    who got it from Eric Young (eay@mincom.oz.au)
 

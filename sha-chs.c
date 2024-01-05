@@ -1,8 +1,10 @@
 /* sha benchmark from CHStone (Hara 2008)
-   found in e.g. legup-4.0/examples/chstone/sha/sha.c
-   which got it www.ertl.jp/chstone/ */
+   found in e.g. legup-4.0/examples/chstone/sha/*.c
+   which got it from http://www.ertl.jp/chstone/ */
 
 #include <stdio.h>
+
+#define PRINT 0
 
 /* #include "sha.h" */
 
@@ -37,6 +39,9 @@ void sha_print ();
 | * Test Vectors (added for CHStone)                                       |
 |     indata, in_i : input data                                            |
 +-------------------------------------------------------------------------*/
+/* The text is a satirical "commencement address" by Mary Schmich for the
+   Chicago Tribune, commonly misattributed to "Kurt Vonnegut" and never
+   delivered, neither at MIT nor in 1997. */
 const BYTE indata[VSIZE][BLOCK_SIZE] = {
   {75, 117, 114, 116, 86, 111, 110, 110, 101, 103, 117, 116, 115, 67, 111,
    109, 109, 101, 110, 99, 101, 109, 101, 110, 116, 65, 100, 100, 114, 101,
@@ -1126,7 +1131,7 @@ const int in_i[VSIZE] = { 8192, 8192 };
 
 /* #include "sha.c" */
 
-/* NIST Secure Hash Algorithm */
+/* NIST Secure Hash Algorithm (160-bit, later called "SHA-1") */
 /* heavily modified by Uwe Hollerbach uh@alumni.caltech edu */
 /* from Peter C. Gutmann's implementation as found in */
 /* Applied Cryptography by Bruce Schneier */
@@ -1315,6 +1320,16 @@ int main (int argc, char ** argv)
   int main_result;
   main_result = 0;
   sha_stream ();
+
+#if PRINT
+  for(int v=0; v<VSIZE; v++) {
+    for(int b=0; b<BLOCK_SIZE; b++) {
+      putc(indata[v][b], stdout);
+    }
+  }
+  putc('\n', stdout);
+  exit(0);
+#endif
 
   for (i = 0; i < 5; i++) {
     main_result += (sha_info_digest[i] == outData[i]);

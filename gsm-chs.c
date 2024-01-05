@@ -1,4 +1,5 @@
-/* GSM benchmark from CHStone (Hara 2008)
+/* GSM benchmark from e.g. .../legup-4.0/examples/chstone/gsm/*.c
+   from CHStone (Hara 2008)
    who got it from Mediabench (Lee et al. 1997) */
 
 /* Copyright 1992 by Jutta Degener and Carsten Bormann, Technische

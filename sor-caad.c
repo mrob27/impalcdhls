@@ -1,7 +1,9 @@
 /* Successive Over Refinement  -*- C++ -*-
    Author: Robert Munafo  (with fixed-point maths from Andrew Canis)
-   Date: 2023 Jun 10
+   Date: 2023 Jun 10 */
 
+
+/*
 This program performs Euler integration on a 2-dimensinal grid to
 simulate the heat equation.
 

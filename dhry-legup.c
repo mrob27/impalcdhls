@@ -1,20 +1,12 @@
-/*  This is adapted from the original by combining the three separate files
-    into one.
+/* This is from e.g. legup-4.0/examples/chstone_hybrid/dhrystone/*.c
+   Adapted from the original by combining the three separate files into one.
  ****************************************************************************
- *
  *                   "DHRYSTONE" Benchmark Program
- *                   -----------------------------
- *                                                                            
  *  Version:    C, Version 2.1
- *                                                                            
  *  File:       dhry-legup.c
- *
  *  Date:       May 25, 1988
- *
  *  Author:     Reinhold P. Weicker
- *
- ****************************************************************************
- */
+ ***************************************************************************/
 
 /*-- #include "dhry.h" -----------------------------------------------------*/
 #ifndef _DHRY_H

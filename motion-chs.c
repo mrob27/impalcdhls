@@ -1,4 +1,5 @@
-/* motion benchmark from CHStone (Hara 2008)
+/* motion benchmark from e.g. legup-4.0/examples/chstone/motion/*.c
+   from CHStone (Hara 2008)
    who got it from Mediabench (Lee et al. 1997) */
 
 #include <stdio.h>
