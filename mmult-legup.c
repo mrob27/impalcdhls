@@ -2,6 +2,10 @@
    from e.g. legup-4.0/examples/matrixmultiply/matrixmultiply.c
    Author: Andrew Canis, Date: June 13, 2012  */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=200000 -O0 mmult-legup.c -o x && time ./x            */
+
 #include <stdio.h>
 
 /* matrices are SIZE x SIZE */
@@ -80,13 +84,19 @@ int multiply(int i, int j) {
 int main(int argc, char ** argv)
 {
   int i, j;
-  
-  unsigned long long count = 0;
+  unsigned long long count;
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
+  count = 0;
   for(i = 0; i < SIZE; i++) {
     for(j = 0; j < SIZE; j++) {
       count += multiply(i, j);
     }
   }
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   printf ("Result: %lld\n", count);
   if (count == 962122000) {
     printf("RESULT: PASS\n");

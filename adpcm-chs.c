@@ -1,6 +1,10 @@
 /* adpcm benchmark from CHStone (Hara 2008)
    found in e.g. legup-4.0/examples/chstone/adpcm/adpcm.c
-   which got it from www.ertl.jp/chstone/ */
+   which got it from http://www.ertl.jp/chstone/ */
+
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+   gcc -DCPU1000=200000 -O0 adpcm-chs.c -o ad && time ./ad            */
 
 #include <stdio.h>
 
@@ -716,6 +720,9 @@ int main (int argc, char ** argv)
   int i;
   int main_result;
 
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   main_result = 0;
   adpcm_main ();
   for (i = 0; i < IN_END / 2; i++) {
@@ -728,6 +735,9 @@ int main (int argc, char ** argv)
       main_result++;
     }
   }
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   printf ("Result: %d\n", main_result);
   if (main_result == 150) {
     printf("RESULT: PASS\n");

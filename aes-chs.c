@@ -3,8 +3,11 @@
    from CHStone (Hara 2008)
    who got it from Akira Iwata, www-ailab.elcom.nitech.ac.jp */
 
-#include <stdio.h>
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=200000 -O0 aes-chs.c -o x && time ./x            */
 
+#include <stdio.h>
 
 int main_result;
 
@@ -84,11 +87,18 @@ int encrypt (int statemt[32], int key[32], int type)
   ByteSub_ShiftRow (statemt, nb);
   AddRoundKey (statemt, type, i);
 
+#ifndef CPU1000
   printf ("encrypted message \t");
+#endif
   for (i = 0; i < nb * 4; ++i) {
-    if (statemt[i] < 16)
+    if (statemt[i] < 16) {
+#ifndef CPU1000
       printf ("0");
+#endif
+    }
+#ifndef CPU1000
     printf ("%x", statemt[i]);
+#endif
   }
 
   for (i = 0; i < 16; i++)
@@ -156,11 +166,18 @@ int decrypt (int statemt[32], int key[32], int type)
 
   AddRoundKey (statemt, type, 0);
 
+#ifndef CPU1000
   printf ("\ndecrypto message\t");
+#endif
   for (i = 0; i < ((type % 1000) / 8); ++i) {
-    if (statemt[i] < 16)
+    if (statemt[i] < 16) {
+#ifndef CPU1000
       printf ("0");
+#endif
+    }
+#ifndef CPU1000
     printf ("%x", statemt[i]);
+#endif
   }
 
   for (i = 0; i < 16; i++)
@@ -790,8 +807,14 @@ int aes_main (void)
 
 int main (int argc, char ** argv)
 {
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   main_result = 0;
   aes_main ();
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   printf ("\nResult: %d\n", main_result);
   if (main_result == 32) {
     printf("RESULT: PASS\n");

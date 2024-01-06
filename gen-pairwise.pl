@@ -287,7 +287,7 @@ while ($arg = shift) {
     $verbose = 2;
 
   } else {
-    die "unregognised argument '$arg', or file '$arg.c' does not exist\n";
+    die "unrecognised argument '$arg', or file '$arg.c' does not exist\n";
   }
 }
 

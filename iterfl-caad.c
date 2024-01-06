@@ -2,6 +2,10 @@
    Author: Robert Munafo
    Date: 2023 Jun 26                                       */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=500000 -O0 iterfl-caad.c -o x && time ./x            */
+
 /* Define GEN_DATA to 1 to have it run iter1() which prints out the data
    to initialise the array ref_r.
 
@@ -176,7 +180,7 @@ int iter4(float cra, float cia, float crb, float cib,
 
 int main()
 {
-  int ans1, ans2, ans3, ans4, got;
+  int ans1, ans2, ans3, ans4, got, expect;
 #if GEN_DATA
   iter1(-1.786429858056, 0.0, REF_ITER);
   //                        Zr to iterate                reference Zr
@@ -186,6 +190,9 @@ int main()
   printf("%.12f\n", ((double)-1.78642712943) + ((double)1.786429858056));
   printf("%.12f\n", ((double)-1.78642716066) + ((double)1.786429858056));
 #else
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   // delta_cr = (-1.78642716066 - (-1.786429858056))
 #if USE_ITER3
   ans1 = iter3(0.000003117636, -0.00000038117, 27, ref_r, ref_i);
@@ -198,7 +205,10 @@ int main()
               0.000002728626, -0.000000018644, 0.000002697396, -0.00000019458,
               27, ref_r, ref_i);
 #endif
-  int expect = (202<<21)^(223<<14)^(252<<7)^235;
+  expect = (202<<21)^(223<<14)^(252<<7)^235;
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   printf("got %08x\n", got);
   if (got == expect) {  printf("PASS\n");
   } else {    printf("FAIL\n");  }

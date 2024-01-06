@@ -2,6 +2,10 @@
    from CHStone (Hara 2008)
    who got it from Mediabench (Lee et al. 1997) */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=200000 -O0 gsm-chs.c -o g && time ./g            */
+
 /* Copyright 1992 by Jutta Degener and Carsten Bormann, Technische
  * Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE. */
@@ -481,6 +485,9 @@ int main(int argc, char ** argv)
   word so[N];
   word LARc[M];
 
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   main_result = 0;
 
   for (i = 0; i < N; i++)
@@ -492,6 +499,9 @@ int main(int argc, char ** argv)
     main_result += (so[i] == outData[i]);
   for (i = 0; i < M; i++)
     main_result += (LARc[i] == outLARc[i]);
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
 
   printf ("Result: %d\n", main_result);
   if (main_result == 168) {

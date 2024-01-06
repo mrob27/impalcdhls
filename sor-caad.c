@@ -2,6 +2,9 @@
    Author: Robert Munafo  (with fixed-point maths from Andrew Canis)
    Date: 2023 Jun 10 */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=100000 -O0 sor-caad.c -o x && time ./x            */
 
 /*
 This program performs Euler integration on a 2-dimensinal grid to
@@ -111,9 +114,15 @@ int sorsum(void)
 
 int main()
 {
-  int count=0;
+  int count = 0;
 
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   sor(); count = sorsum();
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
 
 #if PRINT_IMG
   int i, j;

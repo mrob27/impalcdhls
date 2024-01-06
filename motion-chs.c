@@ -2,6 +2,10 @@
    from CHStone (Hara 2008)
    who got it from Mediabench (Lee et al. 1997) */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=1000000 -O0 motion-chs.c -o x && time ./x            */
+
 #include <stdio.h>
 
 #define Num 2048
@@ -672,6 +676,9 @@ int main (int argc, char ** argv)
   int motion_vertical_field_select[2][2];
   int s, motion_vector_count, mv_format, h_r_size, v_r_size, dmv, mvscale;
 
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   main_result = 0;
   evalue = 0;
   System_Stream_Flag = 0;
@@ -688,21 +695,26 @@ int main (int argc, char ** argv)
       motion_vertical_field_select[i][j] = inmvfs[i][j];
       for (k = 0; k < 2; k++)
         PMV[i][j][k] = inPMV[i][j][k];
-      }
     }
+  }
 
-    Initialize_Buffer ();
-    motion_vectors (PMV, dmvector, motion_vertical_field_select, s,
-                    motion_vector_count, mv_format, h_r_size, v_r_size, dmv,
-                    mvscale);
+  Initialize_Buffer ();
+  motion_vectors (PMV, dmvector, motion_vertical_field_select, s,
+                  motion_vector_count, mv_format, h_r_size, v_r_size, dmv,
+                  mvscale);
 
-    for (i = 0; i < 2; i++)
-      for (j = 0; j < 2; j++) {
-        main_result +=
-          (motion_vertical_field_select[i][j] == outmvfs[i][j]);
-        for (k = 0; k < 2; k++)
-          main_result += (PMV[i][j][k] == outPMV[i][j][k]);
-      }
+  for (i = 0; i < 2; i++) {
+    for (j = 0; j < 2; j++) {
+      main_result +=
+        (motion_vertical_field_select[i][j] == outmvfs[i][j]);
+      for (k = 0; k < 2; k++)
+        main_result += (PMV[i][j][k] == outPMV[i][j][k]);
+    }
+  }
+
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
 
   printf ("Result: %d\n", main_result);
   if (main_result == 12) {

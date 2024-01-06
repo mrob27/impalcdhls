@@ -1,5 +1,8 @@
 /* from e.g. legup-4.0/examples/qsort/qsort.c */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=200000 -O0 aes-chs.c -o x && time ./x            */
 
 /* Non-recursive quick sort, adapted from this on-line implementation:
  *     http://alienryderflex.com/quicksort/
@@ -11,7 +14,7 @@
 
 #include <stdio.h>
 
-int sortData[20][50] = {
+int initData[20][50] = {
   5924, 5021, 23098, 16305, 17160, 10976, 9128, 10580, 7711, 12660,
   382, 2623, 11065, 12248, 6311, 7117, 12376, 7878, 3757, 10610, 18980,
   6406, 6366, 9829, 14604, 9345, 18064, 6037, 14074, 6547, 10207, 14959,
@@ -109,6 +112,8 @@ int sortData[20][50] = {
   7041, 8790, 10930, 3546, 3880, 11553, 7534, 10407, 5218, 8105, 9694,
   6842, 12005, 12823, 14191, 7823, 8506, 9637, 7498, 18137, 9794, 9648};
 
+int sortData[20][50];
+
 void quickSort(int *arr, int elements) {
 
   #define  MAX_LEVELS  300
@@ -135,13 +140,22 @@ void quickSort(int *arr, int elements) {
 
 int main(int argc, char ** argv)
 {
-  int i,j;
+  int i, j, correct;
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
+  for (i = 0; i < 20; i++) {
+    for (j = 1; j < 50; j++) {
+      sortData[i][j] = initData[i][j];
+    }
+  }
+
   /* call quickSort 20 times, each with a 50 element array */
   for (i = 0; i < 20; i++)
     quickSort(sortData[i], 50);
   
   /* now check each array of 50 elements is indeed in sorted order */
-  int correct = 0;
+  correct = 0;
   for (i = 0; i < 20; i++) {
     for (j = 1; j < 50; j++) {
       if (sortData[i][j] >= sortData[i][j-1]) {
@@ -149,6 +163,9 @@ int main(int argc, char ** argv)
       }
     }
   }
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   
   printf("Result: %d\n", correct);
 

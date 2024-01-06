@@ -3,6 +3,10 @@
    As long as you don't define USE_CPLX or USE_CPXFLT to 1, this
    FFT code is non-recursive, which allows for HLS compilation. */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=20000 -O0 fft-caad.c -o f && time ./f            */
+
 #include <stdio.h>
 
 #define N 32
@@ -188,10 +192,11 @@ float fltflt_exp[2*N] = {
  TRAW24R, TRAW24I, TRAW25R, TRAW25I, TRAW26R, TRAW26I, TRAW27R, TRAW27I,
  TRAW28R, TRAW28I, TRAW29R, TRAW29I, TRAW30R, TRAW30I, TRAW31R, TRAW31I
 };
-float fltflt_time[2*N] = {1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0,
+float fltflt_init[2*N] = {1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0,
                           1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0,
                           0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0,
                           0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0};
+float fltflt_time[2*N];
 float fltflt_freq[2*N];
 # define FFADD(dr,di, ar,ai, br,bi) \
     (dr) = (ar) + (br); \
@@ -364,8 +369,13 @@ void fltflt_shw(const char * s, float buf[])
 
 int main()
 {
-  int n = N; int i; int csum = 0;
+  int n, i, csum;
   /* printf("sizeof(creal) = %d\n", sizeof(creal(buf[0]))); */
+
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
+  n = N; csum = 0;
 
 #if GENDATA
   /* To run this, use -lm in the compile line */
@@ -448,6 +458,7 @@ printf("expect: 16+0*I, 1-10.1532*I, 0+0*I, 0.999998-3.29656*I, 0+0*I, 0.999999-
 #endif
 
 #if USE_FLTFLT
+  for (i = 0; i < 2*N; i++) fltflt_time[i] = fltflt_init[i];
   for (i = 0; i < 2*N; i++) fltflt_freq[i] = fltflt_time[i];
   fltflt_fft_rec1(fltflt_time, fltflt_freq);
 # if SHOW
@@ -469,6 +480,9 @@ printf("expect: 16+0*I, 1-10.1532*I, 0+0*I, 0.999998-3.29656*I, 0+0*I, 0.999999-
 #define CSUM32a 0xbb39b809
 #define CSUM32b 0xd5cc0eb2
 
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   printf("csum: %08x\n", csum);
   if ((USE_CPLX || USE_CPXFLT || USE_FLTFLT)
      && (csum != CSUM32a) && (csum != CSUM32b)

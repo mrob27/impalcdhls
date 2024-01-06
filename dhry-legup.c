@@ -3,10 +3,14 @@
  ****************************************************************************
  *                   "DHRYSTONE" Benchmark Program
  *  Version:    C, Version 2.1
- *  File:       dhry-legup.c
+ *  File:       dhry-legup.c (from dhry.h, dhry_2.c, and dhry_1.c)
  *  Date:       May 25, 1988
  *  Author:     Reinhold P. Weicker
  ***************************************************************************/
+
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=1000000 -O0 dhry-legup.c -o d && time ./d            */
 
 /*-- #include "dhry.h" -----------------------------------------------------*/
 #ifndef _DHRY_H
@@ -404,10 +408,13 @@ int main (int argc, char ** argv)
 
   /* Execute for 20 runs */
   REG   int             Number_Of_Runs = 20;
+  int result;
 
   /* Initializations */
-
   Rec_Type rec1, rec2;
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   Next_Ptr_Glob = &rec1;
   Ptr_Glob = &rec2;
 
@@ -427,7 +434,6 @@ int main (int argc, char ** argv)
 
   for (Run_Index = 1; Run_Index <= Number_Of_Runs; ++Run_Index)
   {
-
     Proc_5();
     Proc_4();
       /* Ch_1_Glob == 'A', Ch_2_Glob == 'B', Bool_Glob == true */
@@ -474,6 +480,7 @@ int main (int argc, char ** argv)
   /* uncomment to time dhrystone */
   /* return 0; */
 
+#ifndef CPU1000
   printf ("Execution ends\n");
   printf ("\n");
   printf ("Final values of the variables used in the benchmark:\n");
@@ -513,8 +520,9 @@ int main (int argc, char ** argv)
   printf ("Enum_Loc:            %d\n", Enum_Loc);
   printf ("        should be:   %d\n", 1);
   printf ("\n");
+#endif
 
-  int result = (Int_Glob == 5) + (Bool_Glob == 1) + (Ch_1_Glob == 'A') + 
+  result = (Int_Glob == 5) + (Bool_Glob == 1) + (Ch_1_Glob == 'A') + 
     (Ch_2_Glob == 'B') + (Arr_1_Glob[8] == 7) + (Arr_2_Glob[8][7] == (Number_Of_Runs + 10))
     + (Ptr_Glob->Discr == 0) + (Ptr_Glob->variant.var_1.Enum_Comp == 2) +
     (Ptr_Glob->variant.var_1.Int_Comp == 17) + !strcmp(Ptr_Glob->variant.var_1.Str_Comp, "DHRYSTONE PROGRAM, SOME STRING")
@@ -522,6 +530,10 @@ int main (int argc, char ** argv)
     (Next_Ptr_Glob->variant.var_1.Int_Comp == 18) + (Int_1_Loc == 5) + (Int_2_Loc == 13) + (Int_3_Loc == 7)
     + (Enum_Loc == 1) + !strcmp(Str_1_Loc, "DHRYSTONE PROGRAM, 1'ST STRING")
     + !strcmp(Str_2_Loc, "DHRYSTONE PROGRAM, 2'ND STRING");
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
+
   printf("Result: %d\n", result);
   if (result == 19) {
       printf("RESULT: PASS\n");

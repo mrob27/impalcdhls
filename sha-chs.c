@@ -2,6 +2,10 @@
    found in e.g. legup-4.0/examples/chstone/sha/*.c
    which got it from http://www.ertl.jp/chstone/ */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=20000 -O0 sha-chs.c -o x && time ./x            */
+
 #include <stdio.h>
 
 #define PRINT 0
@@ -1318,6 +1322,9 @@ int main (int argc, char ** argv)
 {
   int i;
   int main_result;
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   main_result = 0;
   sha_stream ();
 
@@ -1334,6 +1341,9 @@ int main (int argc, char ** argv)
   for (i = 0; i < 5; i++) {
     main_result += (sha_info_digest[i] == outData[i]);
   }
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
   printf ("Result: %d\n", main_result);
   if (main_result == 5) {
     printf("RESULT: PASS\n");

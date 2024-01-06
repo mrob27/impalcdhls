@@ -8,6 +8,10 @@
   by Eric Young (eay@mincom.oz.au).
   The implementation was written so as to conform with Netscapes SSL. */
 
+/* Define CPU1000 to 10000 or whatever multiplier to get a self-tester
+   for CPU benchmarking
+     gcc -DCPU1000=50000 -O0 blowfish-chs.c -o bf && time ./bf           */
+
 #include <stdio.h>
 
 /*-- #include "blowfish.h" -------------------------------------------------*/
@@ -1284,8 +1288,14 @@ int main (int argc, char ** argv)
 {
   int main_result;
 
+#ifdef CPU1000
+  for(int cloops=0; cloops<CPU1000; cloops++) {
+#endif
   main_result = 0;
   main_result = blowfish_main ();
+#ifdef CPU1000
+  } /* end of for(cloops=0;...) */
+#endif
 
   printf ("Result: %d\n", main_result);
   if (main_result == 5200) {

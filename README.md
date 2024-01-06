@@ -3,7 +3,7 @@ impalcdhls
 
 Improved Models for Policy-Agent Learning of Compiler Directives in HLS
 
-These files accompany the 2023 paper by Robert Munafo
+These files accompany the 2023 paper by Robert Munafo et al.
 
 
 Dependencies
