@@ -34,20 +34,21 @@ Typical output (Coffee Lake 2.30 GHz):
 
 REVISION HISTORY
  20240105 First version
+ 20240115 Measure -O3 and show ratio; use -std=c9x
 
 `;
 
 sub run1
 {
-  my($prog, $mult) = @_;
-  my($cmd, $bin, $out);
+  my($prog, $mult, $opts) = @_;
+  my($cmd, $bin, $usec, $out);
 
   $mult = int($mult * $itscale);
   $bin = "x";
   if (-f $bin) {
     unlink($bin);
   }
-  $cmd = "gcc -DCPU1000=$mult -O0 $prog -o $bin";
+  $cmd = "gcc $opts -std=c9x -DCPU1000=$mult $prog -o $bin";
   print "$cmd\n";
   system($cmd);
   if(!(-x $bin)) {
@@ -67,9 +68,22 @@ sub run1
   }
   $each = $raw/$mult;
   $usec = 1.0e6 * $each;
+  return (($raw, $each, $usec));
   $g_results[$grn++] = sprintf("%6.3f %9.3e %7.3f %s",
             $raw, $each, $usec, $prog);
+  return (($raw, $each, $usec));
 } # End of run.1
+
+sub run2
+{
+  my($prog, $mult) = @_;
+  my ($raw, $each, $usec, $t1, $t2, $us3, $rat);
+  ($raw, $each, $usec) = &run1($prog, $mult, "-O0");
+  ($t1, $t2, $us3) = &run1($prog, $mult, "-O3");
+  $rat = $usec/$us3;
+  $g_results[$grn++] = sprintf("%6.3f %9.3e %7.3f %7.3f %7.3f %s",
+            $raw, $each, $usec, $us3, $rat, $prog);
+} # End of run.2
 
 $| = 1;
 
@@ -87,19 +101,20 @@ while ($arg = shift) {
   }
 }
 
-&run1("adpcm-chs.c", 200000);
-&run1("aes-chs.c", 500000);
-&run1("blowfish-chs.c", 50000);
-&run1("dhry-legup.c", 1000000);
-&run1("fft-caad.c", 2000000);
-&run1("gsm-chs.c", 1000000);
-&run1("iterfl-caad.c", 500000);
-&run1("mmult-legup.c", 200000);
-&run1("motion-chs.c", 1000000);
-&run1("qsort-legup.c", 100000);
-&run1("sha-chs.c", 20000);
-&run1("sor-caad.c", 100000);
+&run2("adpcm-chs.c", 200000);
+&run2("aes-chs.c", 500000);
+&run2("blowfish-chs.c", 50000);
+&run2("dhry-legup.c", 1000000);
+&run2("fft-caad.c", 2000000);
+&run2("gsm-chs.c", 1000000);
+&run2("iterfl-caad.c", 500000);
+&run2("mmult-legup.c", 200000);
+&run2("motion-chs.c", 1000000);
+&run2("qsort-legup.c", 100000);
+&run2("sha-chs.c", 20000);
+&run2("sor-caad.c", 100000);
 
+print " time    t/run     usec     -O3  speedup program\n";
 for($i=0; $i<$grn; $i++) {
   print "$g_results[$i]\n";
 }
