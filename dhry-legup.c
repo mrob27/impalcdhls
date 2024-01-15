@@ -1,5 +1,6 @@
 /* This is from e.g. legup-4.0/examples/chstone_hybrid/dhrystone/*.c
    Adapted from the original by combining the three separate files into one.
+   Also renamed strcmp to avoid link warning from some machines/compilers
  ****************************************************************************
  *                   "DHRYSTONE" Benchmark Program
  *  Version:    C, Version 2.1
@@ -80,7 +81,7 @@ void dhry_strcpy(char * d, const char * s)
      ;
 }
 
-int strcmp(char * a, char * b)
+int ds_strcmp(char * a, char * b)
 {
    while(*a && *b && *a++ == *b++)
       ;
@@ -275,7 +276,7 @@ Str_30  Str_2_Par_Ref;
     return (true);
   else /* executed */
   {
-    if (strcmp (Str_1_Par_Ref, Str_2_Par_Ref) > 0)
+    if (ds_strcmp (Str_1_Par_Ref, Str_2_Par_Ref) > 0)
       /* then, not executed */
     {
       Int_Loc += 7;
@@ -525,11 +526,11 @@ int main (int argc, char ** argv)
   result = (Int_Glob == 5) + (Bool_Glob == 1) + (Ch_1_Glob == 'A') + 
     (Ch_2_Glob == 'B') + (Arr_1_Glob[8] == 7) + (Arr_2_Glob[8][7] == (Number_Of_Runs + 10))
     + (Ptr_Glob->Discr == 0) + (Ptr_Glob->variant.var_1.Enum_Comp == 2) +
-    (Ptr_Glob->variant.var_1.Int_Comp == 17) + !strcmp(Ptr_Glob->variant.var_1.Str_Comp, "DHRYSTONE PROGRAM, SOME STRING")
+    (Ptr_Glob->variant.var_1.Int_Comp == 17) + !ds_strcmp(Ptr_Glob->variant.var_1.Str_Comp, "DHRYSTONE PROGRAM, SOME STRING")
     + (Next_Ptr_Glob->Discr == 0) + (Next_Ptr_Glob->variant.var_1.Enum_Comp == 1) +
     (Next_Ptr_Glob->variant.var_1.Int_Comp == 18) + (Int_1_Loc == 5) + (Int_2_Loc == 13) + (Int_3_Loc == 7)
-    + (Enum_Loc == 1) + !strcmp(Str_1_Loc, "DHRYSTONE PROGRAM, 1'ST STRING")
-    + !strcmp(Str_2_Loc, "DHRYSTONE PROGRAM, 2'ND STRING");
+    + (Enum_Loc == 1) + !ds_strcmp(Str_1_Loc, "DHRYSTONE PROGRAM, 1'ST STRING")
+    + !ds_strcmp(Str_2_Loc, "DHRYSTONE PROGRAM, 2'ND STRING");
 #ifdef CPU1000
   } /* end of for(cloops=0;...) */
 #endif

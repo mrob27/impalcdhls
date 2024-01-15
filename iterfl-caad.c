@@ -176,6 +176,17 @@ int iter4(float cra, float cia, float crb, float cib,
   }
   return (ansa<<21) ^ (ansb<<14) ^ (ansc<<7) ^ ansd;
 } // End of iter4
+
+/* This version avoids compile-time execution of iter4 in CPU1000 mode */
+volatile float g0 = 0.0;
+int iter4a(volatile float *cra_, float cia, float crb, float cib,
+  float crc, float cic,  float crd, float cid,
+  int ref_period, float *Zref_r, float *Zref_i)
+{
+  float cra; int rv;
+  cra = *cra_ + g0;
+  return iter4(cra, cia,crb,cib,crc,cic,crd,cid,ref_period,Zref_r,Zref_i);
+}
 #endif
 
 int main()
@@ -190,6 +201,10 @@ int main()
   printf("%.12f\n", ((double)-1.78642712943) + ((double)1.786429858056));
   printf("%.12f\n", ((double)-1.78642716066) + ((double)1.786429858056));
 #else
+#if USE_ITER3
+#else
+  float cra = 0.000003117636;
+#endif
 #ifdef CPU1000
   for(int cloops=0; cloops<CPU1000; cloops++) {
 #endif
@@ -201,9 +216,10 @@ int main()
   ans4 = iter3(0.000002697396, -0.00000019458, 27, ref_r, ref_i);
   got = (ans1<<21)^(ans2<<14)^(ans3<<7)^ans4;
 #else
-  got = iter4(0.000003117636, -0.00000038117, 0.000002854146, -0.00000023063,
+  got = iter4a(&cra, -0.00000038117, 0.000002854146, -0.00000023063,
               0.000002728626, -0.000000018644, 0.000002697396, -0.00000019458,
               27, ref_r, ref_i);
+  cra += g0;
 #endif
   expect = (202<<21)^(223<<14)^(252<<7)^235;
 #ifdef CPU1000
